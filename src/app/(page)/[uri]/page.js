@@ -2,42 +2,27 @@ import { Page } from "@/models/Page";
 import { User } from "@/models/User";
 import { Event } from "@/models/Event";
 import {
-  faDiscord,
-  faFacebook,
-  faGithub,
-  faInstagram,
-  faTelegram,
-  faTiktok,
-  faWhatsapp,
-  faYoutube
+  faDiscord, faFacebook, faGithub, faInstagram, faTelegram,
+  faTiktok, faWhatsapp, faYoutube, faXTwitter, faSpotify
 } from "@fortawesome/free-brands-svg-icons";
-import { faEnvelope, faLink, faLocationDot, faMobile, faPhone } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEnvelope, faPhone } from "@fortawesome/free-solid-svg-icons";
 import mongoose from "mongoose";
-import { btoa } from "next/dist/compiled/@edge-runtime/primitives";
-import Image from "next/image";
-import Link from "next/link";
+
+import { LinkCard } from "@/components/profile/LinkCard";
+// --- ADDED: Import the new component for your other links ---
+import { SubLinkCard } from "@/components/profile/SubLinkCard.js";
+
 
 export const buttonsIcons = {
-  email: faEnvelope,
-  mobile: faPhone,
-  instagram: faInstagram,
-  facebook: faFacebook,
-  discord: faDiscord,
-  tiktok: faTiktok,
-  youtube: faYoutube,
-  whatsapp: faWhatsapp,
-  github: faGithub,
-  telegram: faTelegram,
+  email: faEnvelope, mobile: faPhone, instagram: faInstagram,
+  facebook: faFacebook, discord: faDiscord, tiktok: faTiktok,
+  youtube: faYoutube, whatsapp: faWhatsapp, github: faGithub,
+  telegram: faTelegram, x: faXTwitter, spotify: faSpotify,
 };
 
 function buttonLink(key, value) {
-  if (key === 'mobile') {
-    return 'tel:' + value;
-  }
-  if (key === 'email') {
-    return 'mailto:' + value;
-  }
+  if (key === 'mobile') return 'tel:' + value;
+  if (key === 'email') return 'mailto:' + value;
   return value;
 }
 
@@ -45,97 +30,49 @@ export default async function UserPage({ params }) {
   const uri = params.uri;
   await mongoose.connect(process.env.MONGO_URI);
 
-  // Fetch page based on URI
   const page = await Page.findOne({ uri });
-
-  // Check if `page.owner` exists before querying the User
   if (!page || !page.owner) {
-    console.error("Page owner is missing or invalid.");
-    return (
-      <div className="bg-blue-950 text-white min-h-screen">
-        <p>Error: The owner of this page is not defined.</p>
-      </div>
-    );
+    return <div className="text-white">Page or owner not found.</div>;
   }
-
-  // Now that we know page.owner exists, we can safely query the User model
   const user = await User.findOne({ email: page.owner });
-
   if (!user) {
-    console.error("User with this email does not exist.");
-    return (
-      <div className="bg-blue-950 text-white min-h-screen">
-        <p>Error: User not found.</p>
-      </div>
-    );
+    return <div className="text-white">User not found.</div>;
   }
 
-  // Log the event for page view
   await Event.create({ uri: uri, page: uri, type: 'view' });
 
+  const backgroundStyle = page.bgType === 'color'
+    ? { backgroundColor: page.bgColor }
+    : {
+        backgroundImage: `url(${page.bgImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed',
+      };
+
   return (
-    <div className="bg-blue-950 text-white min-h-screen">
-      <div
-        className="h-36 bg-gray-400 bg-cover bg-center"
-        style={
-          page.bgType === 'color'
-            ? { backgroundColor: page.bgColor }
-            : { backgroundImage: `url(${page.bgImage})` }
-        }
-      ></div>
-      <div className="aspect-square w-36 h-36 mx-auto relative -top-16 -mb-12">
-        <Image
-          className="rounded-full w-full h-full object-cover"
-          src={user.image}
-          alt="avatar"
-          width={256} height={256}
+    <div>
+      <div className="fixed inset-0 w-screen h-screen -z-10" style={backgroundStyle}></div>
+
+      {/* Main container with animation */}
+      <div className="animate-fade-in-up flex flex-col items-center gap-8 w-full max-w-md">
+        {/* Your main profile card */}
+        <LinkCard
+          user={user}
+          page={page}
+          buttonsIcons={buttonsIcons}
+          buttonLink={buttonLink}
         />
-      </div>
-      <h2 className="text-2xl text-center mb-1">{page.displayName}</h2>
-      <h3 className="text-md flex gap-2 justify-center items-center text-white/70">
-        <FontAwesomeIcon className="h-4" icon={faLocationDot} />
-        <span>{page.location}</span>
-      </h3>
-      <div className="max-w-xs mx-auto text-center my-2">
-        <p>{page.bio}</p>
-      </div>
-      <div className="flex gap-2 justify-center mt-4 pb-4">
-        {Object.keys(page.buttons).map(buttonKey => (
-          <Link key={buttonKey} href={buttonLink(buttonKey, page.buttons[buttonKey])}
-                className="rounded-full bg-white text-blue-950 p-2 flex items-center justify-center">
-            <FontAwesomeIcon className="w-5 h-5" icon={buttonsIcons[buttonKey]} />
-          </Link>
-        ))}
-      </div>
-      <div className="max-w-2xl mx-auto grid md:grid-cols-2 gap-6 p-4 px-8">
-        {page.links.map(link => (
-          <Link
-            key={link.url}
-            target="_blank"
-            ping={process.env.URL + 'api/click?url=' + btoa(link.url) + '&page=' + page.uri}
-            className="bg-indigo-800 p-2 block flex"
-            href={link.url}>
-            <div className="relative -left-4 overflow-hidden w-16">
-              <div className="w-16 h-16 bg-blue-700 aspect-square relative flex items-center justify-center aspect-square">
-                {link.icon && (
-                  <Image
-                    className="w-full h-full object-cover"
-                    src={link.icon}
-                    alt={'icon'} width={64} height={64} />
-                )}
-                {!link.icon && (
-                  <FontAwesomeIcon icon={faLink} className="w-8 h-8" />
-                )}
-              </div>
-            </div>
-            <div className="flex items-center justify-center shrink grow-0 overflow-hidden">
-              <div>
-                <h3>{link.title}</h3>
-                <p className="text-white/50 h-6 overflow-hidden">{link.subtitle}</p>
-              </div>
-            </div>
-          </Link>
-        ))}
+
+        {/* --- ADDED: Section to display your other links --- */}
+        {page.links && page.links.length > 0 && (
+          <div className="flex flex-col gap-4 w-full">
+            {page.links.map(link => (
+              <SubLinkCard key={link.url} link={{...link, pageUri: page.uri}} />
+            ))}
+          </div>
+        )}
+        {/* --- END of new code --- */}
       </div>
     </div>
   );

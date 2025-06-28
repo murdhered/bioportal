@@ -1,3 +1,5 @@
+// Replace the code in this file: app/account/page.js
+
 import {authOptions} from "@/app/api/auth/[...nextauth]/route";
 import PageButtonsForm from "@/components/forms/PageButtonsForm";
 import PageLinksForm from "@/components/forms/PageLinksForm";
@@ -21,23 +23,28 @@ export default async function AccountPage({ searchParams }) {
 
   const page = await Page.findOne({ owner: session.user.email });
 
-  // ✅ Check for null before calling .toJSON()
+  // --- THIS IS THE UPDATED VIEW FOR A NEW USER ---
   if (!page) {
     return (
-      <div>
-        <UsernameForm desiredUsername={desiredUsername} />
+      // This new container centers the form vertically and horizontally
+      <div className="h-full flex items-center justify-center">
+        <div className="max-w-md w-full">
+            <UsernameForm desiredUsername={desiredUsername} />
+        </div>
       </div>
     );
   }
 
+  // This is the view for an existing user
   const leanPage = cloneDeep(page.toJSON());
   leanPage._id = leanPage._id.toString();
 
   return (
-    <>
+    // We can wrap the existing user forms for consistent centering and max-width
+    <div className="max-w-4xl mx-auto space-y-8">
       <PageSettingsForm page={leanPage} user={session.user} />
       <PageButtonsForm page={leanPage} user={session.user} />
       <PageLinksForm page={leanPage} user={session.user} />
-    </>
+    </div>
   );
 }

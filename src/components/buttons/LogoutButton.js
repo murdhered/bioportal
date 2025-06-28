@@ -1,24 +1,23 @@
-'use client';
-import {faRightFromBracket} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {signOut} from "next-auth/react";
+// Path: src/components/buttons/LogoutButton.js
 
-export default function LogoutButton({
-  className = 'flex items-center gap-2 border p-2 px-4 shadow',
-  iconLeft = false,
-  iconClasses = '',
-}) {
+'use client';
+
+import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { signOut } from "next-auth/react";
+
+export default function LogoutButton() {
   return (
     <button
-      className={className}
-      onClick={() => signOut()}>
-      {iconLeft && (
-        <FontAwesomeIcon icon={faRightFromBracket} className={iconClasses} />
-      )}
-      <span>Logout</span>
-      {!iconLeft && (
-        <FontAwesomeIcon icon={faRightFromBracket} className={iconClasses} />
-      )}
+      onClick={() => signOut()}
+      // New styling for a clean, icon-only button
+      className="w-9 h-9 flex items-center justify-center rounded-full
+                 text-slate-300 bg-transparent
+                 hover:bg-slate-700/80 hover:text-white
+                 transition-colors"
+      title="Logout" // Tooltip for accessibility
+    >
+      <FontAwesomeIcon icon={faRightFromBracket} />
     </button>
   );
 }

@@ -1,9 +1,23 @@
+/* Path: src/app/globals.css */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* --- Your Existing Styles (Preserved) --- */
 body{
     @apply bg-gray-100;
+    width: 100%;      /* Ensure they take full width */
+    margin: 0;        /* Remove any default margin */
+    padding: 0;       /* Remove any default padding */
+    overflow-x: hidden;
+}
+
+#__next {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 input[type="text"], textarea{
@@ -30,10 +44,80 @@ label.input-label{
     opacity: .2;
 }
 
-
 input#navCb:checked ~ aside{
     left:0;
 }
 input#navCb:checked ~ .backdrop{
     display: block;
+}
+
+/* --- Your Existing Animations (Preserved) --- */
+@keyframes fade-in-down {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in-left {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes fade-in-right {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.animate-fade-in-down { animation: fade-in-down 0.8s ease-out forwards; }
+.animate-fade-in-up { animation: fade-in-up 0.8s ease-out forwards; }
+.animate-fade-in-left { animation: fade-in-left 0.8s ease-out forwards; }
+.animate-fade-in-right { animation: fade-in-right 0.8s ease-out forwards; }
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-400 { animation-delay: 0.4s; }
+.delay-500 { animation-delay: 0.5s; }
+.delay-600 { animation-delay: 0.6s; }
+
+
+/* --- NEW: Styles for Public Profile Page --- */
+
+.public-profile-body {
+  /* Override the default bg-gray-100 with our dark gradient */
+  background-color: #0c0a18; /* A dark purple-blue */
+  background-image:
+    radial-gradient(at 20% 10%, hsla(280, 60%, 25%, 0.3) 0px, transparent 50%),
+    radial-gradient(at 80% 90%, hsla(210, 60%, 20%, 0.3) 0px, transparent 50%);
+  background-attachment: fixed;
+
+  /* Set the default text color for these pages */
+  @apply text-white;
+}
+
+/* Base styles for new components applied via @layer */
+@layer components {
+  .link-card-base {
+    @apply transition-all duration-300 ease-out;
+  }
+  .social-button-base {
+    @apply transition-all duration-300 ease-out;
+  }
+  .sortable-ghost{ opacity: .2; }
+/* ... (all your existing keyframes and animation classes remain here) ... */
+.delay-600 { animation-delay: 0.6s; }
+
+
+/* --- UPDATED: Styles for Public Profile Page --- */
+.public-profile-body {
+  /*
+    REMOVE the background-color and background-image from here.
+    We will set it directly on the body tag with a class for the image.
+  */
+  @apply text-white;
+}
+
+/* Base styles for new components */
+@layer components {
+  /* We will style our components directly with Tailwind for this design */
+}
 }
