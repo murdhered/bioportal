@@ -1,5 +1,3 @@
-// Path: app/analytics/page.js
-
 import {authOptions} from "@/app/api/auth/[...nextauth]/route";
 import Chart from "@/components/Chart";
 import {Event} from "@/models/Event";
@@ -13,10 +11,9 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import mongoose from "mongoose";
 import {getServerSession} from "next-auth";
 import {redirect} from "next/navigation";
-import { differenceInDays, formatISO9075, isToday } from "date-fns";
+import { isToday } from "date-fns";
 
 
-// --- NEW: A reusable "Stat Card" component for a dashboard look ---
 function StatCard({ icon, value, title }) {
   return (
     <div className="bg-white p-6 rounded-2xl shadow-lg border flex items-center gap-4">
@@ -39,8 +36,6 @@ export default async function AnalyticsPage() {
     return redirect('/');
   }
 
-  // --- NEW: CRASH PREVENTION ---
-  // If the user has no page yet, redirect them to create one.
   const page = await Page.findOne({owner: session.user.email});
   if (!page) {
     return redirect('/account');
@@ -58,21 +53,17 @@ export default async function AnalyticsPage() {
 
   const clicks = await Event.find({ page: page.uri, type: 'click' });
 
-  // --- NEW: Calculate totals for our stat cards ---
   const totalViews = groupedViews.reduce((sum, view) => sum + view.count, 0);
   const totalClicks = clicks.length;
 
   return (
-    // --- NEW: Modern dashboard layout with better spacing ---
     <div className="max-w-4xl mx-auto my-8 space-y-8">
       
-      {/* --- NEW: Stat Cards section --- */}
       <div className="grid md:grid-cols-2 gap-6">
         <StatCard icon={faEye} title="Total Page Views" value={totalViews} />
         <StatCard icon={faMousePointer} title="Total Link Clicks" value={totalClicks} />
       </div>
 
-      {/* --- NEW: Chart section wrapped in a card --- */}
       <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-lg border">
         <h2 className="text-2xl font-bold mb-6 text-gray-800">Page Views Over Time</h2>
         {groupedViews.length > 0 ? (
@@ -85,7 +76,6 @@ export default async function AnalyticsPage() {
         )}
       </div>
 
-      {/* --- NEW: Clicks section wrapped in a card --- */}
       <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-lg border">
         <h2 className="text-2xl font-bold mb-4 text-gray-800">Link Clicks</h2>
         {page.links.length > 0 ? (
@@ -115,7 +105,9 @@ export default async function AnalyticsPage() {
             })}
           </div>
         ) : (
-          <p className="text-center text-gray-500 py-8">You haven't added any links yet.</p>
+          // --- THIS IS THE FIX ---
+          // Changed "haven't" to "haven&apos;t"
+          <p className="text-center text-gray-500 py-8">You haven&apos;t added any links yet.</p>
         )}
       </div>
 
