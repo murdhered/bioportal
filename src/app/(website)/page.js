@@ -34,7 +34,7 @@ export default async function Home() {
               </p>
               <div className="flex justify-center lg:justify-start space-x-4 animate-fade-in-down delay-400">
                 <a
-                  href={session?.user ? "/dashboard" : "/login"}
+                  href={session?.user ? "/account" : "/login"}
                   className="inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-full shadow-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300 transform hover:scale-105"
                 >
                   {session?.user ? "Go to Dashboard" : "Get Started Free"}

@@ -98,7 +98,7 @@ export default function UsernameForm({ desiredUsername }) {
             </p>
             <form action={handleSubmit}>
                 <label htmlFor="usernameInput" className="block text-sm font-medium text-gray-700 mb-1">
-                    bioportal.to/
+                    bioport.al/
                 </label>
                 <div className="relative">
                     <input

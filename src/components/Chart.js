@@ -1,10 +1,22 @@
+// Path: components/Chart.js
+
 'use client';
 
-import {addDays, differenceInDays, formatISO9075, parseISO} from "date-fns";
-import {CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
+import {addDays, differenceInDays, formatISO9075, parseISO, format} from "date-fns";
+import {Area, AreaChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 
 
 export default function Chart({data}) {
+  // --- NEW: CRASH PREVENTION ---
+  // If there is no data, show a helpful message instead of crashing.
+  if (!data || data.length === 0) {
+    return (
+      <div className="text-center text-gray-400 p-8">
+        Not enough data to display chart.
+      </div>
+    );
+  }
+  
   const xLabelKey = Object.keys(data[0]).find(key => key !== 'date');
 
   const dataWithoutGaps = [];
@@ -36,16 +48,37 @@ export default function Chart({data}) {
 
   return (
     <div>
-      <ResponsiveContainer width="100%" height={200}>
-        <LineChart width={730} height={250} data={dataWithoutGaps}
-                   margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-          <CartesianGrid horizontal={false} strokeWidth="2" stroke="#f5f5f5" />
-          <XAxis dataKey="date" axisLine={false} tickLine={false} tickMargin={10} tick={{fill:'#aaa'}} />
+      <ResponsiveContainer width="100%" height={250}>
+        {/* --- UPDATED: Switched to AreaChart for a nicer look --- */}
+        <AreaChart data={dataWithoutGaps}
+                   margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
+          <defs>
+            <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8}/>
+              <stop offset="95%" stopColor="#8884d8" stopOpacity={0}/>
+            </linearGradient>
+          </defs>
+          <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
+          {/* --- NEW: Formats the date to look like "Jun 29" --- */}
+          <XAxis 
+            dataKey="date" 
+            axisLine={false} 
+            tickLine={false} 
+            tickMargin={10} 
+            tick={{fill:'#aaa'}}
+            tickFormatter={(str) => format(parseISO(str), 'MMM d')}
+          />
           <YAxis axisLine={false} tickLine={false} tickMargin={10} tick={{fill:'#aaa'}} />
           <Tooltip />
-          <Line
-            type="monotone" dataKey={xLabelKey} stroke="#09f" strokeWidth="4" />
-        </LineChart>
+          <Area 
+            type="monotone" 
+            dataKey={xLabelKey} 
+            stroke="#8884d8" 
+            fillOpacity={1} 
+            fill="url(#colorUv)" 
+            strokeWidth="3"
+          />
+        </AreaChart>
       </ResponsiveContainer>
     </div>
   );
