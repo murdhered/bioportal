@@ -1,3 +1,5 @@
+// Replace your existing file with this code: src/components/forms/PageButtonsForm.js
+
 'use client';
 
 import { savePageButtons } from "@/actions/pageActions";
@@ -18,55 +20,82 @@ const phoneValidation = {
   title: "Enter numbers only, with an optional leading '+' for the country code (e.g., +1234567890)."
 };
 
+// --- NEW: Added a `urlPrefix` property for social media buttons ---
 export const allButtons = [
     { key: 'email', label: 'e-mail', icon: faEnvelope, placeholder: 'test@example.com', validation: { type: 'email' } },
     { key: 'mobile', label: 'mobile', icon: faMobile, placeholder: '+1234567890', validation: phoneValidation },
-    { key: 'instagram', label: 'instagram', icon: faInstagram, placeholder: 'https://instagram.com/username', validation: { type: 'url' } },
-    { key: 'facebook', label: 'facebook', icon: faFacebook, placeholder: 'https://facebook.com/username', validation: { type: 'url' } },
-    { key: 'discord', label: 'discord', icon: faDiscord, placeholder: 'https://discord.gg/invite_code', validation: { type: 'url' } },
-    { key: 'tiktok', label: 'tiktok', icon: faTiktok, placeholder: 'https://tiktok.com/@username', validation: { type: 'url' } },
-    { key: 'youtube', label: 'youtube', icon: faYoutube, placeholder: 'https://googleusercontent.com/youtube.com/0...', validation: { type: 'url' } },
+    { key: 'instagram', label: 'instagram', icon: faInstagram, urlPrefix: 'https://instagram.com/', validation: { type: 'url' } },
+    { key: 'facebook', label: 'facebook', icon: faFacebook, urlPrefix: 'https://facebook.com/', validation: { type: 'url' } },
+    { key: 'discord', label: 'discord', icon: faDiscord, urlPrefix: 'https://discord.gg/', validation: { type: 'url' } },
+    { key: 'tiktok', label: 'tiktok', icon: faTiktok, urlPrefix: 'https://tiktok.com/@', validation: { type: 'url' } },
+    { key: 'youtube', label: 'youtube', icon: faYoutube, urlPrefix: 'https://youtube.com/', validation: { type: 'url' } },
     { key: 'whatsapp', label: 'whatsapp', icon: faWhatsapp, placeholder: '+1234567890', validation: phoneValidation },
-    { key: 'github', label: 'github', icon: faGithub, placeholder: 'https://github.com/username', validation: { type: 'url' } },
-    { key: 'telegram', label: 'telegram', icon: faTelegram, placeholder: 'https://t.me/username', validation: { type: 'url' } },
+    { key: 'github', label: 'github', icon: faGithub, urlPrefix: 'https://github.com/', validation: { type: 'url' } },
+    { key: 'telegram', label: 'telegram', icon: faTelegram, urlPrefix: 'https://t.me/', validation: { type: 'url' } },
 ];
 
 function upperFirst(str) {
     return str.slice(0, 1).toUpperCase() + str.slice(1);
 }
 
-export default function PageButtonsForm({ user, page }) {
-    const pageSavedButtonsKeys = Object.keys(page?.buttons ?? {});
-    const pageSavedButtonsInfo = pageSavedButtonsKeys
-        .map(k => allButtons.find(b => b.key === k))
-        .filter(Boolean);
-
-    const [activeButtons, setActiveButtons] = useState(pageSavedButtonsInfo);
+export default function PageButtonsForm({ page }) {
+    // This state now holds only the *active* button configurations (not their values)
+    const pageSavedButtons = Object.keys(page.buttons || {}).map(k => allButtons.find(b => b.key === k));
+    const [activeButtons, setActiveButtons] = useState(pageSavedButtons);
+    
+    // --- NEW: A separate state to hold the live values of the inputs ---
+    const [buttonValues, setButtonValues] = useState(page.buttons || {});
 
     function addButtonToProfile(button) {
+        // Add the button to the active list
         setActiveButtons(prevButtons => [...prevButtons, button]);
-    }
 
-    async function saveButtons(formData) {
-        await savePageButtons(formData);
+        // --- NEW: Pre-fill the value for this new button ---
+        // If the button has a urlPrefix, set it as the default value.
+        setButtonValues(prevValues => {
+            return {
+                ...prevValues,
+                [button.key]: button.urlPrefix || '',
+            };
+        });
+    }
+    
+    // --- NEW: This function now just passes the state object to the action ---
+    async function save() {
+        await savePageButtons(buttonValues);
         toast.success('Settings saved!');
     }
 
+    // --- NEW: A function to update the buttonValues state as the user types ---
+    function handleInputChange(key, value) {
+        setButtonValues(prevValues => {
+            return {
+                ...prevValues,
+                [key]: value,
+            };
+        });
+    }
+
     function removeButton({ key: keyToRemove }) {
+        // Remove from the active buttons list
         setActiveButtons(prevButtons =>
             prevButtons.filter(button => button.key !== keyToRemove)
         );
+        // Remove from the values object
+        setButtonValues(prevValues => {
+            const newValues = {...prevValues};
+            delete newValues[keyToRemove];
+            return newValues;
+        });
     }
 
     const availableButtons = allButtons.filter(
         b1 => !activeButtons.find(b2 => b1.key === b2.key)
     );
 
-    if (!page) return <div>Loading...</div>;
-
     return (
         <SectionBox>
-            <form action={saveButtons}>
+            <form action={save}>
                 <h2 className="text-2xl font-bold mb-4">Social & Contact Buttons</h2>
                 <p className="text-gray-500 mb-6">Add, remove, and reorder your buttons.</p>
                 
@@ -77,40 +106,32 @@ export default function PageButtonsForm({ user, page }) {
                     className="space-y-4"
                 >
                     {activeButtons.map(b => (
-                        // --- UPDATED: The layout for each row is now fully responsive ---
-                        // It will stack vertically on mobile and be horizontal on larger screens.
-                        <div
-                            key={b.key}
-                            className="p-4 bg-white border rounded-lg shadow-sm
-                                       flex flex-col gap-2
-                                       md:flex-row md:items-center md:gap-4"
-                        >
-                            {/* The label container no longer has a fixed width */}
+                        <div key={b.key} className="p-4 bg-white border rounded-lg flex items-center gap-4 shadow-sm">
                             <div className="flex items-center gap-2 text-gray-500 flex-shrink-0">
-                                <FontAwesomeIcon
-                                    icon={faGripLines}
-                                    className="cursor-grab handle text-gray-400"
-                                />
+                                <FontAwesomeIcon icon={faGripLines} className="cursor-grab handle text-gray-400" />
                                 <FontAwesomeIcon icon={b.icon} className="w-5 h-5" />
                                 <span className="font-medium">{upperFirst(b.label)}</span>
                             </div>
 
-                            {/* This container still grows to fill the remaining space on larger screens */}
-                            <div className="flex-grow flex items-center">
+                            <div className="flex-grow">
+                                {/* --- UPDATED: Input is now a controlled component --- */}
                                 <input
-                                    placeholder={b.placeholder || 'Enter your link or contact info'}
+                                    placeholder={b.placeholder || b.urlPrefix || 'Enter your link or contact info'}
                                     name={b.key}
-                                    defaultValue={page?.buttons?.[b.key] ?? ''}
+                                    value={buttonValues[b.key] || ''}
+                                    onChange={ev => handleInputChange(b.key, ev.target.value)}
                                     type={b.validation?.type || 'text'}
                                     pattern={b.validation?.pattern}
                                     title={b.validation?.title}
                                     required
-                                    className="w-full p-2 border rounded-l-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+                                    className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
                                 />
+                            </div>
+                            <div className="flex-shrink-0">
                                 <button
                                     onClick={() => removeButton(b)}
                                     type="button"
-                                    className="py-2 px-4 bg-gray-200 text-gray-600 border border-l-0 rounded-r-lg hover:bg-red-500 hover:text-white transition-colors"
+                                    className="py-2 px-4 bg-gray-200 text-gray-600 rounded-lg hover:bg-red-500 hover:text-white transition-colors"
                                     title="Remove this button"
                                 >
                                     <FontAwesomeIcon icon={faTrash} />

@@ -6,17 +6,28 @@ import mongoose from "mongoose";
 import {getServerSession} from "next-auth";
 
 export async function savePageSettings(formData) {
-  mongoose.connect(process.env.MONGO_URI);
+  await mongoose.connect(process.env.MONGO_URI);
   const session = await getServerSession(authOptions);
   if (session) {
+    // --- UPDATED: Added 'robloxUrl' to the list of keys to save ---
     const dataKeys = [
       'displayName','location',
       'bio', 'bgType', 'bgColor', 'bgImage',
+      'robloxUrl',
     ];
 
     const dataToUpdate = {};
     for (const key of dataKeys) {
       if (formData.has(key)) {
+        // Simple validation for Roblox URL format
+        if (key === 'robloxUrl') {
+            const url = formData.get(key);
+            const robloxUrlRegex = /^https:\/\/www\.roblox\.com\/users\/\d+\/profile$/;
+            if (url && !robloxUrlRegex.test(url)) {
+                // Do not save if the format is invalid but was not empty
+                continue; 
+            }
+        }
         dataToUpdate[key] = formData.get(key);
       }
     }
@@ -40,18 +51,16 @@ export async function savePageSettings(formData) {
   return false;
 }
 
-export async function savePageButtons(formData) {
-  mongoose.connect(process.env.MONGO_URI);
+// --- THIS IS THE MAIN FIX ---
+// The function now accepts a plain JavaScript object (`buttons`) instead of FormData.
+export async function savePageButtons(buttons) {
+  await mongoose.connect(process.env.MONGO_URI);
   const session = await getServerSession(authOptions);
   if (session) {
-    const buttonsValues = {};
-    formData.forEach((value, key) => {
-      buttonsValues[key] = value;
-    });
-    const dataToUpdate = {buttons:buttonsValues};
+    // We update the entire 'buttons' object in the database directly.
     await Page.updateOne(
       {owner:session?.user?.email},
-      dataToUpdate,
+      {buttons},
     );
     return true;
   }
@@ -59,13 +68,14 @@ export async function savePageButtons(formData) {
 }
 
 export async function savePageLinks(links) {
-  mongoose.connect(process.env.MONGO_URI);
+  await mongoose.connect(process.env.MONGO_URI);
   const session = await getServerSession(authOptions);
   if (session) {
     await Page.updateOne(
       {owner:session?.user?.email},
       {links},
     );
+    return true; // Added success return value for consistency
   } else {
     return false;
   }

@@ -1,7 +1,9 @@
 'use client';
-import LogoutButton from "@/components/buttons/LogoutButton";
+
+// --- 1. Import signOut and the logout icon ---
+import {signOut} from "next-auth/react";
 import {faFileLines} from "@fortawesome/free-regular-svg-icons";
-import {faArrowLeft, faChartLine} from "@fortawesome/free-solid-svg-icons";
+import {faArrowLeft, faChartLine, faRightFromBracket, faTrophy} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
@@ -36,11 +38,34 @@ export default function AppSidebar() {
         />
         <span className="">Analytics</span>
       </Link>
-      <LogoutButton
-        iconLeft={true}
-        className={'flex gap-4 items-center text-gray-500 p-2'}
-        iconClasses={'w-6 h-6'}
-      />
+      <Link
+        href={'/leaderboard'}
+        className={
+          "flex gap-4 p-2 "
+          + (path === '/leaderboard' ? 'text-blue-500' : '')
+        }>
+        <FontAwesomeIcon
+          fixedWidth={true}
+          icon={faTrophy}
+          className={'w-6 h-6'}
+        />
+        <span className="">Leaderboard</span>
+      </Link>
+
+      {/* --- 2. Replaced <AppLogoutButton> with a standard <button> --- */}
+      {/* It now has the exact same classes and structure as the Links above */}
+      <button
+        onClick={() => signOut()}
+        className="flex gap-4 p-2"
+      >
+        <FontAwesomeIcon
+          fixedWidth={true}
+          icon={faRightFromBracket}
+          className={'w-6 h-6'}
+        />
+        <span className="">Logout</span>
+      </button>
+
       <Link href={'/'} className="flex items-center gap-2 text-xs text-gray-500 border-t pt-4">
         <FontAwesomeIcon icon={faArrowLeft} className={'w-3 h-3'} />
         <span>Back to website</span>
