@@ -29,7 +29,7 @@ export const allButtons = [
     { key: 'discord', label: 'discord', icon: faDiscord, urlPrefix: 'https://discord.gg/', validation: { type: 'url' } },
     { key: 'tiktok', label: 'tiktok', icon: faTiktok, urlPrefix: 'https://tiktok.com/@', validation: { type: 'url' } },
     { key: 'youtube', label: 'youtube', icon: faYoutube, urlPrefix: 'https://youtube.com/', validation: { type: 'url' } },
-    { key: 'whatsapp', label: 'whatsapp', icon: faWhatsapp, placeholder: '+1234567890', validation: phoneValidation },
+    { key: 'whatsapp', label: 'whatsapp', icon: faWhatsapp, urlPrefix: 'https://wa.me/', placeholder: '+1234567890', validation: { type: 'url' } },
     { key: 'github', label: 'github', icon: faGithub, urlPrefix: 'https://github.com/', validation: { type: 'url' } },
     { key: 'telegram', label: 'telegram', icon: faTelegram, urlPrefix: 'https://t.me/', validation: { type: 'url' } },
 ];
