@@ -11,6 +11,7 @@ const PageSchema = new Schema({
   bgImage: {type: String, default: ''},
   buttons: {type: Object, default: {}},
   links: {type: Object, default: []},
+  discordServerId: {type: String, default: ''},
 }, {timestamps: true});
 
 export const Page = models?.Page || model('Page', PageSchema);

@@ -80,3 +80,19 @@ export async function savePageLinks(links) {
     return false;
   }
 }
+
+export async function savePageWidgets(formData) {
+  await mongoose.connect(process.env.MONGO_URI);
+  const session = await getServerSession(authOptions);
+  if (session) {
+    const dataToUpdate = {
+      discordServerId: formData.get('discordServerId'),
+    };
+    await Page.updateOne(
+      { owner: session.user.email },
+      dataToUpdate,
+    );
+    return true;
+  }
+  return false;
+}

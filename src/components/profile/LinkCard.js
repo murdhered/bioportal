@@ -37,24 +37,26 @@ export function LinkCard({ user, page, buttonsIcons, buttonLink }) {
           </div>
         )}
 
-        {/* --- ADDED: Bio Display --- */}
-        {/* This code block adds your bio back to the page. */}
+        {/* Bio Display */}
         {page.bio && (
           <p className="text-sm text-white/80 mt-2">
             {page.bio}
           </p>
         )}
-        {/* --- END of new code --- */}
 
 
         {/* Social Icons Pill */}
         <div className="mt-4 p-4 w-full bg-black/30 rounded-full border border-white/10 shadow-inner">
           <div className="flex justify-around items-center flex-wrap gap-4">
+            {/* --- THIS IS THE FIX --- */}
+            {/* We now pass the `buttonKey` and `value` props to the SocialButton */}
             {socialButtons.map(key => (
               <SocialButton
                 key={key}
-                href={buttonLink(key, page.buttons[key])}
+                buttonKey={key} // Pass the key (e.g., 'discord')
+                href={buttonLink(key, page.buttons[key])} // Still pass href for other links
                 icon={buttonsIcons[key]}
+                value={page.buttons[key]} // Pass the value to be copied
               />
             ))}
           </div>

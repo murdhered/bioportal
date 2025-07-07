@@ -1,5 +1,3 @@
-// Replace your existing file with this code: src/components/forms/PageButtonsForm.js
-
 'use client';
 
 import { savePageButtons } from "@/actions/pageActions";
@@ -7,7 +5,10 @@ import SubmitButton from "@/components/buttons/SubmitButton";
 import SectionBox from "@/components/layout/SectionBox";
 import { ReactSortable } from "react-sortablejs";
 import {
-    faDiscord, faFacebook, faGithub, faInstagram, faTelegram, faTiktok, faWhatsapp, faYoutube
+    // --- 1. IMPORT THE NEW ICONS ---
+    faDiscord, faFacebook, faGithub, faInstagram, faTelegram, 
+    faTiktok, faWhatsapp, faYoutube, faPinterest, faSpotify, 
+    faTwitch, faLinkedin
 } from "@fortawesome/free-brands-svg-icons";
 import { faEnvelope, faGripLines, faMobile, faPlus, faSave, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -20,18 +21,26 @@ const phoneValidation = {
   title: "Enter numbers only, with an optional leading '+' for the country code (e.g., +1234567890)."
 };
 
-// --- NEW: Added a `urlPrefix` property for social media buttons ---
+// --- 2. ADD THE NEW BUTTON CONFIGURATIONS TO THE ARRAY ---
 export const allButtons = [
+    // Existing Buttons
     { key: 'email', label: 'e-mail', icon: faEnvelope, placeholder: 'test@example.com', validation: { type: 'email' } },
     { key: 'mobile', label: 'mobile', icon: faMobile, placeholder: '+1234567890', validation: phoneValidation },
     { key: 'instagram', label: 'instagram', icon: faInstagram, urlPrefix: 'https://instagram.com/', validation: { type: 'url' } },
     { key: 'facebook', label: 'facebook', icon: faFacebook, urlPrefix: 'https://facebook.com/', validation: { type: 'url' } },
-    { key: 'discord', label: 'discord', icon: faDiscord, urlPrefix: 'https://discord.gg/', validation: { type: 'url' } },
+    // --- CORRECTED: Discord is now a username field for copying ---
+    { key: 'discord', label: 'discord', icon: faDiscord, placeholder: 'your_username' },
     { key: 'tiktok', label: 'tiktok', icon: faTiktok, urlPrefix: 'https://tiktok.com/@', validation: { type: 'url' } },
     { key: 'youtube', label: 'youtube', icon: faYoutube, urlPrefix: 'https://youtube.com/', validation: { type: 'url' } },
-    { key: 'whatsapp', label: 'whatsapp', icon: faWhatsapp, urlPrefix: 'https://wa.me/', placeholder: '+1234567890', validation: { type: 'url' } },
+    { key: 'whatsapp', label: 'whatsapp', icon: faWhatsapp, urlPrefix: 'https://wa.me/', placeholder: 'https://wa.me/yourphonenumber', validation: { type: 'url' } },
     { key: 'github', label: 'github', icon: faGithub, urlPrefix: 'https://github.com/', validation: { type: 'url' } },
     { key: 'telegram', label: 'telegram', icon: faTelegram, urlPrefix: 'https://t.me/', validation: { type: 'url' } },
+
+    // --- NEWLY ADDED BUTTONS (Roblox removed) ---
+    { key: 'spotify', label: 'spotify', icon: faSpotify, urlPrefix: 'https://open.spotify.com/user/', validation: { type: 'url' } },
+    { key: 'pinterest', label: 'pinterest', icon: faPinterest, urlPrefix: 'https://pinterest.com/', validation: { type: 'url' } },
+    { key: 'twitch', label: 'twitch', icon: faTwitch, urlPrefix: 'https://twitch.tv/', validation: { type: 'url' } },
+    { key: 'linkedin', label: 'linkedin', icon: faLinkedin, urlPrefix: 'https://linkedin.com/in/', validation: { type: 'url' } },
 ];
 
 function upperFirst(str) {
@@ -39,19 +48,12 @@ function upperFirst(str) {
 }
 
 export default function PageButtonsForm({ page }) {
-    // This state now holds only the *active* button configurations (not their values)
-    const pageSavedButtons = Object.keys(page.buttons || {}).map(k => allButtons.find(b => b.key === k));
+    const pageSavedButtons = Object.keys(page.buttons || {}).map(k => allButtons.find(b => b.key === k)).filter(Boolean);
     const [activeButtons, setActiveButtons] = useState(pageSavedButtons);
-    
-    // --- NEW: A separate state to hold the live values of the inputs ---
     const [buttonValues, setButtonValues] = useState(page.buttons || {});
 
     function addButtonToProfile(button) {
-        // Add the button to the active list
         setActiveButtons(prevButtons => [...prevButtons, button]);
-
-        // --- NEW: Pre-fill the value for this new button ---
-        // If the button has a urlPrefix, set it as the default value.
         setButtonValues(prevValues => {
             return {
                 ...prevValues,
@@ -60,13 +62,11 @@ export default function PageButtonsForm({ page }) {
         });
     }
     
-    // --- NEW: This function now just passes the state object to the action ---
     async function save() {
         await savePageButtons(buttonValues);
         toast.success('Settings saved!');
     }
 
-    // --- NEW: A function to update the buttonValues state as the user types ---
     function handleInputChange(key, value) {
         setButtonValues(prevValues => {
             return {
@@ -77,11 +77,9 @@ export default function PageButtonsForm({ page }) {
     }
 
     function removeButton({ key: keyToRemove }) {
-        // Remove from the active buttons list
         setActiveButtons(prevButtons =>
             prevButtons.filter(button => button.key !== keyToRemove)
         );
-        // Remove from the values object
         setButtonValues(prevValues => {
             const newValues = {...prevValues};
             delete newValues[keyToRemove];
@@ -114,7 +112,6 @@ export default function PageButtonsForm({ page }) {
                             </div>
 
                             <div className="flex-grow">
-                                {/* --- UPDATED: Input is now a controlled component --- */}
                                 <input
                                     placeholder={b.placeholder || b.urlPrefix || 'Enter your link or contact info'}
                                     name={b.key}

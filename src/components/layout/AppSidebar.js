@@ -1,12 +1,17 @@
 'use client';
 
-// --- 1. Import signOut and the logout icon ---
-import {signOut} from "next-auth/react";
-import {faFileLines} from "@fortawesome/free-regular-svg-icons";
-import {faArrowLeft, faChartLine, faRightFromBracket, faTrophy} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import { signOut } from "next-auth/react";
+import { faFileLines } from "@fortawesome/free-regular-svg-icons";
+import {
+    faArrowLeft,
+    faChartLine,
+    faRightFromBracket,
+    faTrophy,
+    faCubes, // 1. Import a new icon for Widgets
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
-import {usePathname} from "next/navigation";
+import { usePathname } from "next/navigation";
 
 export default function AppSidebar() {
   const path = usePathname();
@@ -52,8 +57,21 @@ export default function AppSidebar() {
         <span className="">Leaderboard</span>
       </Link>
 
-      {/* --- 2. Replaced <AppLogoutButton> with a standard <button> --- */}
-      {/* It now has the exact same classes and structure as the Links above */}
+      {/* --- 2. ADDED: The new link to your Widgets page --- */}
+      <Link
+        href={'/widgets'}
+        className={
+          "flex gap-4 p-2 "
+          + (path === '/widgets' ? 'text-blue-500' : '')
+        }>
+        <FontAwesomeIcon
+          fixedWidth={true}
+          icon={faCubes}
+          className={'w-6 h-6'}
+        />
+        <span className="">Widgets</span>
+      </Link>
+
       <button
         onClick={() => signOut()}
         className="flex gap-4 p-2"
