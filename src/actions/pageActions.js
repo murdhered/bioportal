@@ -4,6 +4,38 @@ import {Page} from "@/models/Page";
 import {User} from "@/models/User";
 import mongoose from "mongoose";
 import {getServerSession} from "next-auth";
+import { revalidatePath } from "next/cache";
+
+export async function updateUsername(formData) {
+    const newUsername = formData.get('username');
+    
+    await mongoose.connect(process.env.MONGO_URI);
+    const session = await getServerSession(authOptions);
+
+    if (!session) {
+        return { error: 'Not authenticated.' };
+    }
+
+    // Check if the new username is already taken by another page
+    const existingPage = await Page.findOne({ uri: newUsername });
+    if (existingPage) {
+        return { error: 'This username is already taken.' };
+    }
+
+    // If it's available, update the current user's page
+    const result = await Page.updateOne(
+        { owner: session.user.email },
+        { uri: newUsername }
+    );
+
+    if (result.modifiedCount > 0) {
+        // Clear the cache for the account page to reflect the change
+        revalidatePath('/account');
+        return { success: 'Username updated successfully!' };
+    }
+
+    return { error: 'Could not update username.' };
+}
 
 export async function savePageSettings(formData) {
   await mongoose.connect(process.env.MONGO_URI);

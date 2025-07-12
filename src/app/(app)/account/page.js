@@ -1,4 +1,4 @@
-// Replace the code in this file: app/account/page.js
+// Path: app/(app)/account/page.js
 
 import {authOptions} from "@/app/api/auth/[...nextauth]/route";
 import PageButtonsForm from "@/components/forms/PageButtonsForm";
@@ -10,6 +10,7 @@ import mongoose from "mongoose";
 import {getServerSession} from "next-auth";
 import {redirect} from "next/navigation";
 import cloneDeep from 'clone-deep';
+import ChangeUsernameForm from "@/components/forms/ChangeUsernameForm"; // <-- 1. Import the new form
 
 export default async function AccountPage({ searchParams }) {
   const session = await getServerSession(authOptions);
@@ -23,10 +24,8 @@ export default async function AccountPage({ searchParams }) {
 
   const page = await Page.findOne({ owner: session.user.email });
 
-  // --- THIS IS THE UPDATED VIEW FOR A NEW USER ---
   if (!page) {
     return (
-      // This new container centers the form vertically and horizontally
       <div className="h-full flex items-center justify-center">
         <div className="max-w-md w-full">
             <UsernameForm desiredUsername={desiredUsername} />
@@ -35,14 +34,16 @@ export default async function AccountPage({ searchParams }) {
     );
   }
 
-  // This is the view for an existing user
   const leanPage = cloneDeep(page.toJSON());
   leanPage._id = leanPage._id.toString();
 
   return (
-    // We can wrap the existing user forms for consistent centering and max-width
     <div className="max-w-4xl mx-auto space-y-8">
+      {/* 2. Add the new ChangeUsernameForm component here */}
+      
+      
       <PageSettingsForm page={leanPage} user={session.user} />
+      <ChangeUsernameForm page={leanPage} />
       <PageButtonsForm page={leanPage} user={session.user} />
       <PageLinksForm page={leanPage} user={session.user} />
     </div>
