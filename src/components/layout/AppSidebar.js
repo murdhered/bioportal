@@ -7,7 +7,8 @@ import {
     faChartLine,
     faRightFromBracket,
     faTrophy,
-    faCubes, // 1. Import a new icon for Widgets
+    faCubes,
+    faMusic, // 1. Import the new icon for Music
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
@@ -56,8 +57,6 @@ export default function AppSidebar() {
         />
         <span className="">Leaderboard</span>
       </Link>
-
-      {/* --- 2. ADDED: The new link to your Widgets page --- */}
       <Link
         href={'/widgets'}
         className={
@@ -70,6 +69,21 @@ export default function AppSidebar() {
           className={'w-6 h-6'}
         />
         <span className="">Widgets</span>
+      </Link>
+
+      {/* --- 2. ADDED: The new link to your Music page --- */}
+      <Link
+        href={'/music'}
+        className={
+          "flex gap-4 p-2 "
+          + (path === '/music' ? 'text-blue-500' : '')
+        }>
+        <FontAwesomeIcon
+          fixedWidth={true}
+          icon={faMusic}
+          className={'w-6 h-6'}
+        />
+        <span className="">Music</span>
       </Link>
 
       <button

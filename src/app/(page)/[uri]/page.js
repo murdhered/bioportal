@@ -11,6 +11,7 @@ import mongoose from "mongoose";
 import { LinkCard } from "@/components/profile/LinkCard";
 import { SubLinkCard } from "@/components/profile/SubLinkCard.js";
 import DiscordWidget from "@/components/widgets/DiscordWidget";
+import MusicPlayer from "@/components/MusicPlayer"; // 1. Import the MusicPlayer
 
 export const buttonsIcons = {
   email: faEnvelope, mobile: faPhone, instagram: faInstagram,
@@ -65,10 +66,7 @@ export default async function UserPage({ params }) {
             views={views}
           />
 
-          {/* Section to display the Discord Widget */}
           {page.discordServerId && (
-            // --- THIS IS THE ONLY CHANGE ---
-            // Added `flex justify-center` to this div to center the widget inside it.
             <div className="w-full flex justify-center">
               <DiscordWidget serverId={page.discordServerId} />
             </div>
@@ -79,6 +77,14 @@ export default async function UserPage({ params }) {
               {page.links.map(link => (
                 <SubLinkCard key={link.url} link={{...link, pageUri: page.uri}} />
               ))}
+            </div>
+          )}
+
+          {/* The MusicPlayer is now the final element in the content column. */}
+          {/* It will only show if a SoundCloud URL is saved. */}
+          {page.soundCloudUrl && (
+            <div className="w-full flex justify-center">
+              <MusicPlayer url={page.soundCloudUrl} />
             </div>
           )}
         </div>

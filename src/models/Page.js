@@ -12,6 +12,7 @@ const PageSchema = new Schema({
   buttons: {type: Object, default: {}},
   links: {type: Object, default: []},
   discordServerId: {type: String, default: ''},
+  soundCloudUrl: {type: String, default: ''},
 }, {timestamps: true});
 
 export const Page = models?.Page || model('Page', PageSchema);

@@ -128,3 +128,38 @@ export async function savePageWidgets(formData) {
   }
   return false;
 }
+
+export async function saveSoundCloudUrl(formData) {
+    await mongoose.connect(process.env.MONGO_URI);
+    const session = await getServerSession(authOptions);
+
+    if (session) {
+        const soundCloudUrl = formData.get('soundCloudUrl');
+
+        // Regex to validate SoundCloud track URLs
+        const soundCloudRegex = /^(https?:\/\/)?(www\.)?(soundcloud\.com|snd\.sc)\/[a-zA-Z0-9-]+\/[a-zA-Z0-9-]+$/;
+        
+        // We only validate if the user entered something. An empty string is allowed to clear the field.
+        if (soundCloudUrl && soundCloudUrl.length > 0 && !soundCloudRegex.test(soundCloudUrl)) {
+            // Return an object with an error message if the format is invalid
+            return {error: 'Please enter a valid SoundCloud track URL.'};
+        }
+
+        // Find the user's page and update ONLY the soundCloudUrl field
+        await Page.updateOne(
+            { owner: session.user.email },
+            { soundCloudUrl: soundCloudUrl },
+        );
+        
+        // Revalidate the user's public page to show the change immediately
+        const page = await Page.findOne({owner: session.user.email});
+        if (page) {
+            revalidatePath('/' + page.uri);
+        }
+        
+        // Return a success object
+        return {success: 'Music settings saved!'};
+    }
+
+    return {error: 'Authentication failed.'};
+}
