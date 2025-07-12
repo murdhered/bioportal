@@ -15,20 +15,21 @@ export default async function Home() {
     <>
       {/* Hero Section - This will now fill the screen below the header */}
       <section
-        style={{ paddingTop: HEADER_HEIGHT_PX }} // Use padding-top to push content below fixed header
-        className="relative w-screen h-screen px-4 md:px-8 overflow-hidden flex items-center justify-center"
-      >
+  style={{ paddingTop: HEADER_HEIGHT_PX }}
+  className="relative w-screen h-screen px-4 md:px-8 overflow-hidden flex items-center justify-center bg-gray-100 dark:bg-gray-900"
+>
+
         {/* The actual content inside, still constrained by max-w for readability */}
         <div className="w-full max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
             {/* ... Hero content as before ... */}
             <div className="text-center lg:text-left">
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight mb-6 animate-fade-in-down">
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">
-                  Your Digital Hub.
-                </span><br />
-                All In One Link.
-              </h1>
+  <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">
+    Your Digital Hub.
+  </span><br />
+  <span className="text-white">All In One Link.</span>
+</h1>
               <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed animate-fade-in-down delay-200">
                 Simplify your online presence. Share your social profiles, websites, contact info, and more on a single, beautifully designed, and customizable page.
               </p>
@@ -106,7 +107,7 @@ export default async function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
             <div className="order-2 lg:order-1 relative h-64 sm:h-80 md:h-96 rounded-xl overflow-hidden shadow-2xl animate-fade-in-left">
               <img
-                src="https://via.placeholder.com/800x600/7F00FF/FFFFFF?text=Customizable+Page+Screenshot"
+                src="/profile.png"
                 alt="Customizable profile page example"
                 className="absolute inset-0 w-full h-full object-cover"
               />
@@ -144,14 +145,13 @@ export default async function Home() {
               </p>
               <ul className="text-md text-gray-700 dark:text-gray-200 space-y-3 list-disc list-inside">
                 <li>📈 Real-time link click tracking</li>
-                <li>🌍 Geo-location insights</li>
                 <li>⏰ Daily, weekly, monthly performance reports</li>
                 <li>🔗 Track individual link performance</li>
               </ul>
             </div>
             <div className="relative h-64 sm:h-80 md:h-96 rounded-xl overflow-hidden shadow-2xl animate-fade-in-right delay-200">
               <img
-                src="https://via.placeholder.com/800x600/6A0DAD/FFFFFF?text=Analytics+Dashboard+Screenshot"
+                src="analytics.png"
                 alt="Analytics dashboard example"
                 className="absolute inset-0 w-full h-full object-cover"
               />
