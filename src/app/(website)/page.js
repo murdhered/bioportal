@@ -107,7 +107,7 @@ export default async function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
             <div className="order-2 lg:order-1 relative h-64 sm:h-80 md:h-96 rounded-xl overflow-hidden shadow-2xl animate-fade-in-left">
               <img
-                src="/profile.png"
+                src="/profile.PNG"
                 alt="Customizable profile page example"
                 className="absolute inset-0 w-full h-full object-cover"
               />
@@ -151,7 +151,7 @@ export default async function Home() {
             </div>
             <div className="relative h-64 sm:h-80 md:h-96 rounded-xl overflow-hidden shadow-2xl animate-fade-in-right delay-200">
               <img
-                src="analytics.png"
+                src="analytics.PNG"
                 alt="Analytics dashboard example"
                 className="absolute inset-0 w-full h-full object-cover"
               />
