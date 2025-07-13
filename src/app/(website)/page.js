@@ -115,11 +115,10 @@ export default async function Home() {
                 Stunning & Customizable Profiles
               </h2>
               <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
-                Choose from beautiful templates, customize colors, fonts, and backgrounds to perfectly match your brand or personality. Make your page truly yours.
+                Customize your profile from various options for colors, backgrounds, profile pictures and others to perfectly match your brand or personality. Make your page truly yours.
               </p>
               <ul className="text-md text-gray-700 dark:text-gray-200 space-y-3 list-disc list-inside">
-                <li>🎨 Vast theme library and color options</li>
-                <li>✍️ Custom fonts and typography controls</li>
+                <li>✍️ Showcase your own socials for everyone</li>
                 <li>🖼️ Add custom backgrounds and profile pictures</li>
                 <li>📊 Integrated analytics to track performance</li>
               </ul>
