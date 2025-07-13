@@ -12,11 +12,10 @@ import {
     faCubes,
     faHeart,
     faArrowRight,
-    faWrench, // New icon for the manage button
+    faWrench, 
 } from "@fortawesome/free-solid-svg-icons";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 
-// --- Helper components (These are the same as your original code) ---
 function useOnScreen(options) {
     const ref = useRef(null);
     const [isVisible, setIsVisible] = useState(false);
@@ -57,17 +56,13 @@ function FeatureCard({ icon, title, description }) {
         </div>
     );
 }
-// --- End of helper components ---
 
-
-// This is the main Client Component for your About Page.
-// It receives the `session` as a prop from its parent Server Component.
 export default function AboutPageClient({ session }) {
     return (
         <div className="bg-slate-900 text-white">
             <main className="max-w-4xl mx-auto px-6 space-y-28 pb-24 pt-32 sm:pt-40">
 
-                {/* --- Hero Section --- */}
+
                 <AnimatedSection className="text-center">
                     <h1 className="text-5xl sm:text-7xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-purple-500 text-transparent bg-clip-text">
                         Our Mission.
@@ -77,7 +72,7 @@ export default function AboutPageClient({ session }) {
                     </p>
                 </AnimatedSection>
 
-                {/* --- Features Section --- */}
+
                 <AnimatedSection>
                     <div className="text-center mb-12">
                         <h2 className="text-4xl font-bold text-white">Everything You Need. Nothing You Don&apos;t.</h2>
@@ -91,7 +86,7 @@ export default function AboutPageClient({ session }) {
                     </div>
                 </AnimatedSection>
 
-                {/* --- Open Source Section --- */}
+
                 <AnimatedSection>
                     <div className="bg-gradient-to-br from-slate-800 to-slate-900 p-8 rounded-2xl border border-slate-700 text-center flex flex-col items-center">
                         <div className="p-4 bg-green-600/20 text-green-400 rounded-full mb-4">
@@ -112,10 +107,9 @@ export default function AboutPageClient({ session }) {
                     </div>
                 </AnimatedSection>
                 
-                {/* --- THIS IS THE DYNAMIC CALL TO ACTION --- */}
+
                 <AnimatedSection className="text-center">
                     {session ? (
-                        // This will be shown if the user IS logged in
                         <div>
                             <h2 className="text-4xl font-bold text-white">Welcome Back!</h2>
                             <p className="text-slate-400 mt-2">Ready to tweak your page? Let&apos;s go.</p>
@@ -125,7 +119,6 @@ export default function AboutPageClient({ session }) {
                             </Link>
                         </div>
                     ) : (
-                        // This will be shown if the user IS NOT logged in
                         <div>
                             <h2 className="text-4xl font-bold text-white">Ready to Build Your Hub?</h2>
                             <Link href="/login" className="inline-flex items-center gap-2 mt-6 bg-blue-600 text-white font-bold py-3 px-8 rounded-full hover:bg-blue-700 transition-transform hover:scale-105">

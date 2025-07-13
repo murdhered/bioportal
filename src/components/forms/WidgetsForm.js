@@ -36,8 +36,7 @@ export default function WidgetsForm({ page }) {
                         className="w-full p-2 outline-none"
                     />
                 </div>
-                {/* --- THIS IS THE FIX --- */}
-                {/* Replaced the double quotes with &quot; */}
+
                 <p className="text-xs text-gray-500 mt-2">
                     To find this, go to your Discord Server Settings &gt; Widget, and copy the &quot;Server ID&quot;.
                 </p>

@@ -57,17 +57,13 @@ export default function PageButtonsForm({ page }) {
     }
     
     async function save() {
-        // --- THIS IS THE FIX ---
-        // 1. Create a new object that will hold the values in the correct order.
         const orderedButtonValues = {};
-        // 2. Loop through `activeButtons` (which IS correctly ordered) to build the new object.
+       
         activeButtons.forEach(button => {
-            // We only add the button if it has a value, to keep data clean.
             if (buttonValues[button.key]) {
                 orderedButtonValues[button.key] = buttonValues[button.key];
             }
         });
-        // 3. Send the new, correctly ordered object to the server.
         await savePageButtons(orderedButtonValues);
         
         toast.success('Settings saved!');

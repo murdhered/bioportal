@@ -9,7 +9,6 @@ import { faDiscord } from "@fortawesome/free-brands-svg-icons";
 import { faCircle, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 
-// A small component for the loading state to keep the main code clean
 function WidgetSkeleton() {
     return (
         <div className="w-full max-w-sm bg-black/40 backdrop-blur-xl p-4 rounded-2xl animate-pulse border border-white/10">
@@ -71,7 +70,6 @@ export default function DiscordWidget({ serverId }) {
                         <span>{serverData.presence_count.toLocaleString()} Members Online</span>
                     </div>
                 </div>
-                {/* --- THIS IS THE FIXED BUTTON --- */}
                 <Link
                     href={serverData.instant_invite || '#'}
                     target="_blank"

@@ -2,9 +2,9 @@
 
 'use client';
 
-import { saveSoundCloudUrl } from "@/actions/pageActions"; // Import the correct action
+import { saveSoundCloudUrl } from "@/actions/pageActions"; 
 import SubmitButton from "@/components/buttons/SubmitButton";
-import { faSoundcloud } from "@fortawesome/free-brands-svg-icons"; // Use SoundCloud icon
+import { faSoundcloud } from "@fortawesome/free-brands-svg-icons"; 
 import { faSave } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import toast from "react-hot-toast";
@@ -36,7 +36,7 @@ export default function MusicSettingsForm({ page }) {
                         <FontAwesomeIcon icon={faSoundcloud} className="text-orange-500 w-6 h-6 ml-2" />
                         <input
                             id="musicUrlIn"
-                            name="soundCloudUrl" // Ensure name matches the schema
+                            name="soundCloudUrl" 
                             type="text"
                             placeholder="e.g., https://soundcloud.com/artist/track-name"
                             defaultValue={page.soundCloudUrl}

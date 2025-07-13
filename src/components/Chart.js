@@ -7,8 +7,6 @@ import {Area, AreaChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XA
 
 
 export default function Chart({data}) {
-  // --- NEW: CRASH PREVENTION ---
-  // If there is no data, show a helpful message instead of crashing.
   if (!data || data.length === 0) {
     return (
       <div className="text-center text-gray-400 p-8">
@@ -49,7 +47,6 @@ export default function Chart({data}) {
   return (
     <div>
       <ResponsiveContainer width="100%" height={250}>
-        {/* --- UPDATED: Switched to AreaChart for a nicer look --- */}
         <AreaChart data={dataWithoutGaps}
                    margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
           <defs>
@@ -59,7 +56,6 @@ export default function Chart({data}) {
             </linearGradient>
           </defs>
           <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-          {/* --- NEW: Formats the date to look like "Jun 29" --- */}
           <XAxis 
             dataKey="date" 
             axisLine={false} 

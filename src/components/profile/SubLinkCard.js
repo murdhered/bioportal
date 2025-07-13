@@ -6,7 +6,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 export function SubLinkCard({ link }) {
-  // This ping is for your analytics, just like in your original code
   const pingUrl = (process.env.NEXT_PUBLIC_URL || '') + '/api/click?url=' + btoa(link.url) + '&page=' + link.pageUri;
 
   return (
@@ -16,7 +15,6 @@ export function SubLinkCard({ link }) {
       ping={pingUrl}
       className="w-full flex items-center p-2 bg-black/30 backdrop-blur-xl rounded-2xl border border-white/10 shadow-lg transition-all duration-300 hover:bg-white/20 hover:scale-105"
     >
-      {/* Icon on the left */}
       <div className="w-16 h-16 bg-white/10 rounded-lg flex-shrink-0 flex items-center justify-center mr-4">
         {link.icon ? (
           <Image
@@ -31,7 +29,6 @@ export function SubLinkCard({ link }) {
         )}
       </div>
 
-      {/* Text on the right */}
       <div className="flex-grow text-left">
         <h3 className="font-bold text-white text-lg">{link.title}</h3>
         {link.subtitle && (

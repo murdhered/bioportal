@@ -11,7 +11,27 @@ import mongoose from "mongoose";
 import { LinkCard } from "@/components/profile/LinkCard";
 import { SubLinkCard } from "@/components/profile/SubLinkCard.js";
 import DiscordWidget from "@/components/widgets/DiscordWidget";
-import MusicPlayer from "@/components/MusicPlayer"; // 1. Import the MusicPlayer
+import MusicPlayer from "@/components/MusicPlayer";
+
+
+export async function generateMetadata({ params }) {
+  const uri = params.uri;
+  await mongoose.connect(process.env.MONGO_URI);
+  const page = await Page.findOne({ uri });
+
+  if (!page) {
+    return {
+      title: 'Profile Not Found',
+      description: 'The page you are looking for does not exist.',
+    }
+  }
+
+  return {
+    title: `@${page.displayName || page.uri}'s Profile`,
+    description: `View ${page.displayName || page.uri}'s BioPortal page, with all their links and content in one place.`,
+  }
+}
+
 
 export const buttonsIcons = {
   email: faEnvelope, mobile: faPhone, instagram: faInstagram,
@@ -80,8 +100,6 @@ export default async function UserPage({ params }) {
             </div>
           )}
 
-          {/* The MusicPlayer is now the final element in the content column. */}
-          {/* It will only show if a SoundCloud URL is saved. */}
           {page.soundCloudUrl && (
             <div className="w-full flex justify-center">
               <MusicPlayer url={page.soundCloudUrl} />

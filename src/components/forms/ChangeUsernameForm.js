@@ -13,8 +13,7 @@ import grabUsername from "@/actions/grabUsername";
 import SubmitButton from "@/components/buttons/SubmitButton";
 import SectionBox from "@/components/layout/SectionBox";
 
-// --- 1. COPIED THE RESERVED USERNAMES FROM YOUR OTHER FORM ---
-const reservedUsernames = ['account', 'pricing', 'login', 'analytics', 'about'];
+const reservedUsernames = ['account', 'pricing', 'login', 'analytics', 'music', 'leaderboard', 'about'];
 
 export default function ChangeUsernameForm({ page }) {
     const [username, setUsername] = useState(page.uri || '');
@@ -26,14 +25,12 @@ export default function ChangeUsernameForm({ page }) {
 
     useEffect(() => {
         const checkUsername = async () => {
-            // Don't check if the username is the user's current one
             if (debouncedUsername === page.uri) {
                 setIsAvailable(null);
                 setValidationError('');
                 return;
             }
 
-            // --- UPDATED: Now checks usernames of 1 character or more ---
             if (debouncedUsername.length >= 1 && !validationError) {
                 setIsChecking(true);
                 setIsAvailable(null);
@@ -68,7 +65,7 @@ export default function ChangeUsernameForm({ page }) {
         }
     }
 
-    // --- 2. REPLACED WITH THE EXACT SAME VALIDATION LOGIC FROM YOUR USERNAMEFORM ---
+   
     function handleUsernameChange(ev) {
         let value = ev.target.value;
         value = value.toLowerCase().replace(/\s/g, '-').replace(/[^a-z0-9_.-]/g, '');
@@ -99,7 +96,7 @@ export default function ChangeUsernameForm({ page }) {
                 <p className="text-gray-500 mb-6">Update your public URL.</p>
                 
                 <label htmlFor="usernameChangeInput" className="block text-sm font-medium text-gray-700 mb-1">
-                    bioportal.to/
+                    bioport.al/
                 </label>
                 <div className="relative">
                     <input

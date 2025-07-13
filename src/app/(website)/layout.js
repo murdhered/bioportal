@@ -13,19 +13,8 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={lato.className}>
-        {/*
-          CRITICAL CHANGE HERE:
-          Removed the 'max-w-4xl mx-auto p-6' from the div wrapping {children}.
-          This div should be a minimal wrapper, if any.
-        */}
         <main className="flex flex-col min-h-screen"> {/* Ensure main fills the screen vertically */}
-          <Header /> {/* Your fixed header */}
-          {/*
-            This div no longer constrains the width. It will allow children (like Home page)
-            to define their own width/max-width.
-            We add 'w-full' to ensure it takes all available horizontal space.
-            The 'pt-[HEADER_HEIGHT_HERE]' is important to push content down if Header is fixed.
-          */}
+          <Header /> 
           <div className="flex-1 w-full relative"> {/* flex-1 makes it take remaining vertical space */}
             {children}
           </div>

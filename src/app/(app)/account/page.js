@@ -39,8 +39,7 @@ export default async function AccountPage({ searchParams }) {
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
-      {/* 2. Add the new ChangeUsernameForm component here */}
-      
+
       
       <PageSettingsForm page={leanPage} user={session.user} />
       <ChangeUsernameForm page={leanPage} />

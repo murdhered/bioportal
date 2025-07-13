@@ -7,22 +7,17 @@ export default async function Home() {
   const session = await getServerSession(authOptions);
   const userName = session?.user?.name?.split(' ')[0] || 'User';
 
-  // Define your header height here. Ensure it matches your Header component's actual height.
-  const HEADER_HEIGHT_PX = '64px'; // Or '80px' if your Header is h-20 etc.
+  const HEADER_HEIGHT_PX = '64px'; 
 
   return (
-    // REMOVED THE <main> TAG HERE, as it's now in layout.js
     <>
-      {/* Hero Section - This will now fill the screen below the header */}
       <section
   style={{ paddingTop: HEADER_HEIGHT_PX }}
   className="relative w-screen h-screen px-4 md:px-8 overflow-hidden flex items-center justify-center bg-gray-100 dark:bg-gray-900"
 >
 
-        {/* The actual content inside, still constrained by max-w for readability */}
         <div className="w-full max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-            {/* ... Hero content as before ... */}
             <div className="text-center lg:text-left">
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight mb-6 animate-fade-in-down">
   <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">
@@ -64,7 +59,7 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Subsequent sections below the hero. Removed 'w-full' and 'min-h-screen' from main */}
+     
       <section id="how-it-works" className="w-full bg-white dark:bg-gray-800 py-20 md:py-28 px-4 md:px-8 shadow-inner">
         <div className="container mx-auto max-w-6xl text-center">
           <h2 className="text-4xl md:text-5xl font-bold mb-12 text-gray-800 dark:text-gray-100 animate-fade-in-up">

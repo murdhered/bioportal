@@ -17,11 +17,11 @@ export default async function MusicPage() {
 
     const page = await Page.findOne({ owner: session.user.email });
     if (!page) {
-        // Redirect users who haven't created a page yet
+
         return redirect('/account');
     }
 
-    // Safely pass page data to the client component form
+
     const leanPage = cloneDeep(page.toJSON());
     leanPage._id = leanPage._id.toString();
 

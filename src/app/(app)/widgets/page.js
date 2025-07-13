@@ -24,7 +24,7 @@ export default async function WidgetsPage() {
                 <WidgetsForm page={JSON.parse(JSON.stringify(page))} />
             </section>
 
-            {/* Live Preview Section */}
+
             <section className="bg-white p-8 rounded-xl shadow-lg border">
                 <h2 className="text-2xl font-bold text-gray-800 mb-4">Live Previews</h2>
                 <div className="space-y-6">

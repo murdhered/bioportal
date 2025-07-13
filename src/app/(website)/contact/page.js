@@ -92,8 +92,7 @@ export default function ContactPage() {
     }
 
     return (
-        // --- THIS IS THE FIX ---
-        // Added `min-h-screen` to ensure the dark background fills the entire page height.
+        
         <div className="bg-slate-900 min-h-screen pt-32 px-4 pb-16">
             <div className="max-w-5xl mx-auto">
                 <AnimatedSection className="text-center mb-12">

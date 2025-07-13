@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faStar, faClock } from "@fortawesome/free-solid-svg-icons";
 import Link from 'next/link';
 
-// A custom hook for triggering animations when elements scroll into view
+
 function useOnScreen(options) {
     const ref = useRef(null);
     const [isVisible, setIsVisible] = useState(false);
@@ -35,7 +35,7 @@ function useOnScreen(options) {
     return [ref, isVisible];
 }
 
-// A reusable component to wrap sections that will be animated
+
 function AnimatedSection({ children, className = '', delay = '0ms' }) {
     const [ref, isVisible] = useOnScreen({ threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
     return (
@@ -100,7 +100,7 @@ const plans = [
 
 function FaqItem({ question, answer }) {
     return (
-        // --- UPDATED: Dark theme styles for FAQ items ---
+        
         <div className="bg-slate-800/50 p-6 rounded-lg border border-slate-700">
             <h3 className="font-semibold text-white text-lg">{question}</h3>
             <p className="text-slate-400 mt-2">{answer}</p>
@@ -113,11 +113,11 @@ export default function PricingPage() {
     const [billingCycle, setBillingCycle] = useState('monthly');
 
     return (
-        // --- UPDATED: Main background is now dark ---
+
         <div className="bg-slate-900 py-12 pt-28">
             <div className="max-w-5xl mx-auto px-4 sm:px-6">
                 <AnimatedSection className="text-center">
-                    {/* --- UPDATED: Text colors for dark background --- */}
+                 
                     <h1 className="text-4xl sm:text-5xl font-extrabold text-white">
                         Find the Plan That&apos;s Right For You
                     </h1>
@@ -152,7 +152,7 @@ export default function PricingPage() {
                 <div className="mt-12 grid md:grid-cols-3 gap-8">
                     {plans.map((plan, index) => (
                         <AnimatedSection key={plan.name} delay={`${300 + index * 150}ms`}>
-                            {/* --- UPDATED: Dark theme styles for pricing cards --- */}
+                           
                             <div
                                 className={`relative bg-slate-800/50 border rounded-2xl shadow-lg p-8 flex flex-col h-full
                                             ${plan.isMostPopular ? 'border-2 border-indigo-500' : 'border-slate-700'}`}

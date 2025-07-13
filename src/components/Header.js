@@ -5,7 +5,7 @@ import LogoutButton from "@/components/buttons/LogoutButton";
 import {faLink} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {getServerSession} from "next-auth";
-import Image from "next/image"; // Import the Next.js Image component
+import Image from "next/image"; 
 import Link from "next/link";
 
 export default async function Header() {
@@ -16,7 +16,6 @@ export default async function Header() {
       <div className="max-w-4xl mx-auto">
         <div className="flex justify-between items-center bg-slate-800/80 backdrop-blur-md rounded-full px-4 py-2 border border-slate-700 shadow-lg">
 
-          {/* Left side: Logo and primary navigation */}
           <div className="flex items-center gap-6">
             <Link href={'/'} className="flex items-center gap-2 text-white">
               <FontAwesomeIcon icon={faLink} />
@@ -29,17 +28,15 @@ export default async function Header() {
             </nav>
           </div>
 
-          {/* Right side: Authentication links */}
           <div className="flex items-center gap-2 text-sm">
             {session ? (
-              // --- UPDATED: This is the new "User Menu" for logged-in users ---
+              
               <>
                 <Link
                   href={'/account'}
                   className="flex items-center gap-2 px-3 py-1 rounded-full text-slate-300
                              hover:bg-slate-700/80 hover:text-white transition-colors"
                 >
-                  {/* User Avatar */}
                   <Image
                     src={session?.user?.image}
                     alt="avatar"
@@ -47,7 +44,6 @@ export default async function Header() {
                     height={28}
                     className="rounded-full"
                   />
-                  {/* User Name (First name only) */}
                   <span className="hidden sm:block font-semibold">
                     {session?.user?.name?.split(' ')[0]}
                   </span>
@@ -55,7 +51,6 @@ export default async function Header() {
                 <LogoutButton />
               </>
             ) : (
-              // This is the view for logged-out users (unchanged)
               <>
                 <Link href={'/login'} className="text-slate-300 hover:text-white transition-colors px-3 py-1.5">
                   Sign In

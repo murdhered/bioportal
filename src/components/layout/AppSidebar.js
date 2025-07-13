@@ -8,7 +8,7 @@ import {
     faRightFromBracket,
     faTrophy,
     faCubes,
-    faMusic, // 1. Import the new icon for Music
+    faMusic, 
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
@@ -71,7 +71,6 @@ export default function AppSidebar() {
         <span className="">Widgets</span>
       </Link>
 
-      {/* --- 2. ADDED: The new link to your Music page --- */}
       <Link
         href={'/music'}
         className={

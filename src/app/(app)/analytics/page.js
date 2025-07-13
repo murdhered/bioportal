@@ -105,8 +105,7 @@ export default async function AnalyticsPage() {
             })}
           </div>
         ) : (
-          // --- THIS IS THE FIX ---
-          // Changed "haven't" to "haven&apos;t"
+
           <p className="text-center text-gray-500 py-8">You haven&apos;t added any links yet.</p>
         )}
       </div>

@@ -11,7 +11,7 @@ import { useDebounce } from 'use-debounce';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle, faExclamationCircle, faSpinner } from "@fortawesome/free-solid-svg-icons";
 
-const reservedUsernames = ['account', 'pricing', 'login', 'analytics', 'about'];
+const reservedUsernames = ['account','music', 'leaderboard', 'pricing', 'login', 'analytics', 'about'];
 
 export default function UsernameForm({ desiredUsername }) {
     const [username, setUsername] = useState(desiredUsername || '');
@@ -27,9 +27,6 @@ export default function UsernameForm({ desiredUsername }) {
                 setIsChecking(true);
                 setIsAvailable(null);
                 
-                // --- THIS IS THE FIX ---
-                // We create a temporary FormData to ONLY CHECK the username.
-                // We add the `checkOnly` flag.
                 const formData = new FormData();
                 formData.set('username', debouncedUsername);
                 formData.set('checkOnly', 'true'); // This flag tells the server action not to save.
@@ -45,12 +42,8 @@ export default function UsernameForm({ desiredUsername }) {
         checkUsername();
     }, [debouncedUsername, validationError]);
 
-    // The handleSubmit now simply passes the form data to the action.
-    // The server action handles the creation and redirect.
     async function handleSubmit(formData) {
         const result = await grabUsername(formData);
-        // We only need to handle the 'false' case for UI feedback.
-        // On success, the server action will redirect automatically.
         if (result === false) {
             setIsAvailable(false);
         }
@@ -71,7 +64,6 @@ export default function UsernameForm({ desiredUsername }) {
         setUsername(value);
     }
     
-    // ... getFeedbackIcon function remains the same ...
     function getFeedbackIcon() {
         if (isChecking) {
             return <FontAwesomeIcon icon={faSpinner} className="animate-spin text-gray-400"/>;

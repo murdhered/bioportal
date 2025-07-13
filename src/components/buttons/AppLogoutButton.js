@@ -1,4 +1,4 @@
-// Create this new file at: src/components/buttons/AppLogoutButton.js
+// *ath: src/components/buttons/AppLogoutButton.js
 
 'use client';
 

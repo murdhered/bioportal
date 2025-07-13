@@ -1,4 +1,4 @@
-// Create this new file at: app/(app)/leaderboard/page.js
+// *ath: app/(app)/leaderboard/page.js
 
 import { Event } from "@/models/Event";
 import { Page } from "@/models/Page";
@@ -8,7 +8,7 @@ import { faTrophy, faLink } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 import Link from "next/link";
 
-// A small component to style the top 3 ranks
+
 function RankIcon({ rank }) {
     if (rank === 1) return <FontAwesomeIcon icon={faTrophy} className="text-yellow-400" />;
     if (rank === 2) return <FontAwesomeIcon icon={faTrophy} className="text-gray-400" />;
@@ -19,38 +19,38 @@ function RankIcon({ rank }) {
 export default async function LeaderboardPage() {
     await mongoose.connect(process.env.MONGO_URI);
 
-    // This is an advanced database query to get the leaderboard data
+
     const leaderboardData = await Event.aggregate([
-        // 1. Get only the 'view' events
+        
         { $match: { type: 'view' } },
-        // 2. Group by page URI and count the views for each
+        
         { $group: {
             _id: "$uri",
             views: { "$sum": 1 }
         }},
-        // 3. Sort by the highest view count
+        
         { $sort: { views: -1 } },
-        // 4. Limit to the top 100 results
+
         { $limit: 100 },
-        // 5. Look up the corresponding page data for each result
+        
         { $lookup: {
             from: 'pages',
             localField: '_id',
             foreignField: 'uri',
             as: 'pageData'
         }},
-        // 6. Deconstruct the pageData array to a single object
+        
         { $unwind: "$pageData" },
-        // 7. Look up the user data for each page owner
+       
         { $lookup: {
             from: 'users',
             localField: 'pageData.owner',
             foreignField: 'email',
             as: 'userData'
         }},
-        // 8. Deconstruct the userData array
+       
         { $unwind: "$userData" },
-        // 9. Select only the fields we need for the final result
+       
         { $project: {
             _id: 0,
             uri: "$_id",
@@ -69,7 +69,7 @@ export default async function LeaderboardPage() {
                     <p className="text-gray-500 mt-1">See the most viewed profiles on our website.</p>
                 </div>
                 
-                {/* The list of ranked users */}
+              
                 <div className="space-y-2">
                     {leaderboardData.map((item, index) => (
                         <div

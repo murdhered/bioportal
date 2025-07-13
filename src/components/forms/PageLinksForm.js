@@ -14,17 +14,13 @@ export default function PageLinksForm({page,user}) {
   const [links,setLinks] = useState(page.links || []);
 
   async function save() {
-    // --- THIS IS THE NEW VALIDATION LOGIC ---
-    // 1. Check if any of the links have an empty title or URL.
     const hasEmptyLink = links.some(l => l.title.trim() === '' || l.url.trim() === '');
     
     if (hasEmptyLink) {
-      // 2. If an empty link is found, show an error message and stop.
       toast.error('Please fill in a title and URL for all links before saving.');
       return;
     }
     
-    // 3. If all links are valid, proceed with saving.
     await savePageLinks(links);
     toast.success('Saved!');
   }
@@ -137,9 +133,7 @@ export default function PageLinksForm({page,user}) {
             ))}
           </ReactSortable>
         </div>
-        
-        {/* --- THIS IS THE SAVE BUTTON FIX --- */}
-        {/* The container is now a flexbox that centers its content */}
+
         <div className="border-t pt-6 mt-8 flex justify-center">
           <SubmitButton className="max-w-xs">
             <FontAwesomeIcon icon={faSave} />
