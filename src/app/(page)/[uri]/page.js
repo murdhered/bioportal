@@ -27,7 +27,7 @@ export async function generateMetadata({ params }) {
   }
 
   return {
-    title: `@${page.displayName || page.uri}'s Profile`,
+    title: `@${page.uri || page.uri}'s Profile`,
     description: `View ${page.displayName || page.uri}'s BioPortal page, with all their links and content in one place.`,
   }
 }
