@@ -5,7 +5,6 @@ import SubmitButton from "@/components/buttons/SubmitButton";
 import SectionBox from "@/components/layout/SectionBox";
 import { ReactSortable } from "react-sortablejs";
 import {
-    // --- 1. IMPORT THE NEW ICONS ---
     faDiscord, faFacebook, faGithub, faInstagram, faTelegram, 
     faTiktok, faWhatsapp, faYoutube, faPinterest, faSpotify, 
     faTwitch, faLinkedin
@@ -21,22 +20,17 @@ const phoneValidation = {
   title: "Enter numbers only, with an optional leading '+' for the country code (e.g., +1234567890)."
 };
 
-// --- 2. ADD THE NEW BUTTON CONFIGURATIONS TO THE ARRAY ---
 export const allButtons = [
-    // Existing Buttons
     { key: 'email', label: 'e-mail', icon: faEnvelope, placeholder: 'test@example.com', validation: { type: 'email' } },
     { key: 'mobile', label: 'mobile', icon: faMobile, placeholder: '+1234567890', validation: phoneValidation },
     { key: 'instagram', label: 'instagram', icon: faInstagram, urlPrefix: 'https://instagram.com/', validation: { type: 'url' } },
     { key: 'facebook', label: 'facebook', icon: faFacebook, urlPrefix: 'https://facebook.com/', validation: { type: 'url' } },
-    // --- CORRECTED: Discord is now a username field for copying ---
     { key: 'discord', label: 'discord', icon: faDiscord, placeholder: 'your_username' },
     { key: 'tiktok', label: 'tiktok', icon: faTiktok, urlPrefix: 'https://tiktok.com/@', validation: { type: 'url' } },
     { key: 'youtube', label: 'youtube', icon: faYoutube, urlPrefix: 'https://youtube.com/', validation: { type: 'url' } },
     { key: 'whatsapp', label: 'whatsapp', icon: faWhatsapp, urlPrefix: 'https://wa.me/', placeholder: 'https://wa.me/yourphonenumber', validation: { type: 'url' } },
     { key: 'github', label: 'github', icon: faGithub, urlPrefix: 'https://github.com/', validation: { type: 'url' } },
     { key: 'telegram', label: 'telegram', icon: faTelegram, urlPrefix: 'https://t.me/', validation: { type: 'url' } },
-
-    // --- NEWLY ADDED BUTTONS (Roblox removed) ---
     { key: 'spotify', label: 'spotify', icon: faSpotify, urlPrefix: 'https://open.spotify.com/user/', validation: { type: 'url' } },
     { key: 'pinterest', label: 'pinterest', icon: faPinterest, urlPrefix: 'https://pinterest.com/', validation: { type: 'url' } },
     { key: 'twitch', label: 'twitch', icon: faTwitch, urlPrefix: 'https://twitch.tv/', validation: { type: 'url' } },
@@ -63,7 +57,19 @@ export default function PageButtonsForm({ page }) {
     }
     
     async function save() {
-        await savePageButtons(buttonValues);
+        // --- THIS IS THE FIX ---
+        // 1. Create a new object that will hold the values in the correct order.
+        const orderedButtonValues = {};
+        // 2. Loop through `activeButtons` (which IS correctly ordered) to build the new object.
+        activeButtons.forEach(button => {
+            // We only add the button if it has a value, to keep data clean.
+            if (buttonValues[button.key]) {
+                orderedButtonValues[button.key] = buttonValues[button.key];
+            }
+        });
+        // 3. Send the new, correctly ordered object to the server.
+        await savePageButtons(orderedButtonValues);
+        
         toast.success('Settings saved!');
     }
 
